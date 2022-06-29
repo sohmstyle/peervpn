@@ -1,0 +1,12 @@
+Source: peervpn
+Section: misc
+Priority: optional
+Maintainer: Mikhail Dorozhkin sohmstyle@gmail.com
+
+Package: peervpn
+Version: v0.0.0-44
+Architecture: all
+Depends: libssl1.0.0, iproute2
+Build-Depends: libssl1.0-dev [amd64], zlib1g-dev [amd64]
+Description: PeerVPN server
+ https://github.com/peervpn/peervpn

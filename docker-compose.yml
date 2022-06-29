@@ -1,0 +1,25 @@
+version: '3.5'
+services:
+  nginx:
+    container_name: nginx
+    image: nginx:stable
+    volumes:
+      - /opt/repo/:/var/www/html/repo/
+      - /opt/peervpn/repo.conf:/etc/nginx/conf.d/default.conf
+    restart: always
+    networks:
+      - default
+    ports:
+      - "8080:80"
+
+  debuild:
+    build:
+      dockerfile: ./Dockerfile      
+      context: ./
+    container_name: debuild
+    image: ubuntu_debuild:latest
+    volumes:
+      - /opt/peervpn/peervpn1/peervpn:/mnt/build
+      - /opt/repo/:/mnt/repo
+    networks:
+      - default        

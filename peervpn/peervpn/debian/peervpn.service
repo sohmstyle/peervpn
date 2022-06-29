@@ -1,0 +1,11 @@
+[Unit]
+Description=PeerVPN service
+After=network.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/peervpn /etc/peervpn/peervpn.conf
+
+[Install]
+WantedBy=multi-user.target

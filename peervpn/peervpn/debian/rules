@@ -1,0 +1,28 @@
+#!/usr/bin/make -f
+export DH_VERBOSE = 1
+
+url='https://peervpn.net/files/peervpn-0-044.tar.gz'
+service_name=peervpn
+build_dir=peervpn
+deb_dir=/mnt/repo
+bin_path=/usr/local/sbin
+
+override_dh_auto_clean:
+	if [ ! -f $(build_dir) ]; then rm -rf $(build_dir); fi
+	mkdir $(build_dir)
+	dh_auto_clean
+
+override_dh_auto_configure:
+	wget $(url) -O $(build_dir).tar.gz
+	tar -xzf $(build_dir).tar.gz -C $(build_dir)/ --strip-components=1
+	rm -f $(build_dir).tar.gz
+	cd $(build_dir) && make
+
+override_dh_auto_install:
+	cd $(service_name) && make -f $(CURDIR)/Makefile install DESTDIR="$(CURDIR)/debian/$(build_dir)$(bin_path)/$(service_name)"
+	cp $(build_dir)/$(service_name).conf debian/$(build_dir)/etc/$(service_name)/ 
+
+override_dh_usrlocal:
+
+%:
+	dh $@ --sourcedirectory=$(build_dir)/

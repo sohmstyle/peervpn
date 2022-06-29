@@ -1,0 +1,22 @@
+---
+- hosts: "{{ hosts }}"
+  connection: local
+  become: yes
+  tasks:
+  - name: Add private repo
+    apt_repository:
+      repo: "deb [allow-insecure=yes] {{ repo_url }} ./"
+      update_cache: yes
+      validate_certs: no
+      state: present
+  
+  - name: Install peervpn
+    package:
+      name: peervpn
+      state: present
+  
+  - name: Start PeerVPN
+    systemd:
+      state: started
+      enabled: yes
+      name: peervpn  
